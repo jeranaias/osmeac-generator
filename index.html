@@ -3,53 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="OSMEAC 5-Paragraph Order Generator for USMC tactical leaders. Offline-capable with night mode.">
-  <title>OSMEAC Generator - USMC Tools</title>
+  <title>OSMEAC Generator | 5-Paragraph Order Builder | USMC Tools</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Free online OSMEAC 5-Paragraph Order Generator for USMC tactical leaders. Build squad attack orders with proper military formatting. Offline-capable PWA with tactical night mode.">
+  <meta name="keywords" content="OSMEAC, 5 paragraph order, USMC, Marine Corps, squad attack order, tactical order, combat order, military planning, fire team, SMEAC, patrol order, operations order, OPORD, warning order, fragmentary order">
+  <meta name="author" content="USMC Tools">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="OSMEAC Generator | 5-Paragraph Order Builder">
+  <meta property="og:description" content="Free tool for building 5-paragraph orders with proper USMC formatting.">
 
   <!-- PWA -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#8B0000">
   <link rel="apple-touch-icon" href="assets/icon-192.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="OSMEAC">
 
   <!-- Styles -->
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <!-- Skip Link - Accessibility -->
   <a href="#main" class="skip-link">Skip to main content</a>
-
-  <!-- Header -->
-  <header class="header no-print">
-    <div class="header-container flex justify-between items-center">
-      <div>
-        <h1 class="header__title">OSMEAC Generator</h1>
-        <p class="header__subtitle">5-Paragraph Order Builder</p>
-      </div>
-      <div class="header__controls flex gap-2">
-        <button id="load-example-btn" class="btn btn--outline btn--sm" title="Load example order">Example</button>
-        <button id="theme-toggle" class="btn btn--ghost" aria-label="Toggle theme" title="Toggle theme">
-          <span class="theme-icon">&#9788;</span>
-        </button>
-        <button id="menu-toggle" class="btn btn--ghost" aria-label="Menu" title="Menu">
-          &#9776;
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <!-- Menu Dropdown -->
-  <div id="menu-dropdown" class="menu-dropdown hidden no-print">
-    <div class="menu-container">
-      <button id="new-order-btn" class="menu-item">New Order</button>
-      <button id="load-order-btn" class="menu-item">Load Saved Order</button>
-      <button id="save-order-btn" class="menu-item">Save Order</button>
-      <hr class="menu-divider">
-      <button id="export-text-btn" class="menu-item">Export to Text File</button>
-      <button id="print-order-btn" class="menu-item">Print Order</button>
-    </div>
-  </div>
 
   <!-- Live Preview Pane (Sliding) -->
   <div id="livePreviewPane" class="live-preview-pane">
@@ -66,13 +44,27 @@
     </div>
   </div>
 
-  <!-- Main Content -->
   <div class="container" id="mainContainer">
-  <main id="main">
-    <div class="pane-content">
+    <!-- Header -->
+    <header>
+      <div class="header-controls">
+        <button type="button" class="theme-toggle" onclick="ThemeManager.cycle()" aria-label="Toggle theme">
+          <span id="themeIcon" class="theme-icon">&#9788;</span>
+        </button>
+      </div>
+      <h1>OSMEAC GENERATOR</h1>
+      <p class="subtitle">5-Paragraph Order Builder</p>
+    </header>
 
-        <!-- Section Tabs -->
-        <div class="section-tabs no-print">
+    <p class="intro-link">
+      Free tool for Marines · <a href="https://github.com/jeranaias/osmeac-generator#readme" target="_blank">Documentation & Guide &rarr;</a>
+    </p>
+
+    <main id="main">
+      <!-- Navigation & Quick Actions -->
+      <div class="form-section">
+        <h2 class="section-title">Order Sections</h2>
+        <div class="section-tabs">
           <button class="section-tab active" data-section="orientation">O</button>
           <button class="section-tab" data-section="situation">S</button>
           <button class="section-tab" data-section="mission">M</button>
@@ -80,11 +72,27 @@
           <button class="section-tab" data-section="admin">A</button>
           <button class="section-tab" data-section="command">C</button>
         </div>
+        <div class="quick-toolbar">
+          <button type="button" id="previewToggle" class="btn btn-primary" onclick="App.togglePreview()">Live Preview</button>
+          <button type="button" id="load-example-btn" class="btn btn-secondary">Load Example</button>
+          <button type="button" id="menu-toggle" class="btn btn-outline">Menu &#9662;</button>
+        </div>
+        <div id="menu-dropdown" class="menu-dropdown hidden">
+          <button id="new-order-btn" class="menu-item">New Order</button>
+          <button id="load-order-btn" class="menu-item">Load Saved Order</button>
+          <button id="save-order-btn" class="menu-item">Save Order</button>
+          <hr class="menu-divider">
+          <button id="copy-order-btn" class="menu-item">Copy to Clipboard</button>
+          <button id="export-btn" class="menu-item">Export to Text File</button>
+          <button id="print-btn" class="menu-item">Print Order</button>
+        </div>
+      </div>
 
-        <!-- ORIENTATION Section -->
-        <div id="form-orientation" class="section-form active">
+      <!-- ORIENTATION Section -->
+      <div id="form-orientation" class="section-form active">
+        <div class="form-section">
           <h2 class="section-title">Orientation</h2>
-          <p class="form-intro">Orient your unit to the terrain and situation.</p>
+          <p class="help-text" style="margin-bottom: 16px;">Orient your unit to the terrain and situation.</p>
 
           <div class="form-group">
             <label class="label" for="present-location">Present Location (8-digit grid)</label>
@@ -686,18 +694,15 @@
           </div>
         </div>
 
+        </div>
       </div>
-    </div>
 
-    <!-- Quick Actions -->
-    <div class="quick-toolbar">
-      <button type="button" id="previewToggle" class="btn btn--primary" onclick="App.togglePreview()">Live Preview</button>
-      <button id="copy-order-btn" class="btn btn--outline" title="Copy to clipboard">Copy</button>
-      <button id="export-btn" class="btn btn--outline" title="Export to file">Export</button>
-      <button id="print-btn" class="btn btn--outline" title="Print order">Print</button>
-    </div>
+    </main>
 
-  </main>
+    <footer>
+      <p><strong>OSMEAC Generator v1.0</strong></p>
+      <p>Part of <a href="https://jeranaias.github.io/usmc-tools/">USMC Tools</a> · <a href="https://github.com/jeranaias/osmeac-generator">GitHub</a></p>
+    </footer>
   </div>
 
   <!-- Save Order Modal -->
@@ -713,8 +718,8 @@
         </div>
       </div>
       <div class="modal__footer">
-        <button id="save-modal-cancel" class="btn btn--outline">Cancel</button>
-        <button id="save-modal-confirm" class="btn btn--primary">Save</button>
+        <button id="save-modal-cancel" class="btn btn-outline">Cancel</button>
+        <button id="save-modal-confirm" class="btn btn-primary">Save</button>
       </div>
     </div>
   </div>
@@ -731,15 +736,15 @@
         </div>
       </div>
       <div class="modal__footer">
-        <button id="load-modal-cancel" class="btn btn--outline">Cancel</button>
+        <button id="load-modal-cancel" class="btn btn-outline">Cancel</button>
       </div>
     </div>
   </div>
 
-  <!-- Footer (print only) -->
-  <footer class="footer-print print-only">
-    <p>Generated by OSMEAC Generator - https://jeranaias.github.io/osmeac-generator/</p>
-  </footer>
+  <!-- Toast -->
+  <div id="toast" class="toast" role="alert">
+    <span id="toastMessage"></span>
+  </div>
 
   <!-- Scripts -->
   <script src="js/storage.js"></script>

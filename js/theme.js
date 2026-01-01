@@ -58,6 +58,13 @@ const ThemeManager = {
   },
 
   /**
+   * Alias for toggle
+   */
+  cycle() {
+    this.toggle();
+  },
+
+  /**
    * Update the theme toggle button icon
    */
   updateIcon() {
