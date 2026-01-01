@@ -7,6 +7,7 @@ const App = {
   orderData: null,
   currentSection: 'orientation',
   previewDebounce: null,
+  previewActive: false,
 
   sections: {
     orientation: OrientationSection,
@@ -23,6 +24,27 @@ const App = {
     this.populateAllFields();
     this.updateLivePreview();
     console.log('OSMEAC Generator initialized');
+  },
+
+  togglePreview() {
+    const pane = document.getElementById('livePreviewPane');
+    const container = document.getElementById('mainContainer');
+    const toggle = document.getElementById('previewToggle');
+
+    this.previewActive = !this.previewActive;
+
+    if (this.previewActive) {
+      pane?.classList.add('show');
+      container?.classList.add('preview-active');
+      toggle?.classList.add('active');
+      toggle.textContent = 'Hide Preview';
+      this.updateLivePreview();
+    } else {
+      pane?.classList.remove('show');
+      container?.classList.remove('preview-active');
+      toggle?.classList.remove('active');
+      toggle.textContent = 'Live Preview';
+    }
   },
 
   setupEventListeners() {
@@ -159,19 +181,18 @@ const App = {
   },
 
   updateLivePreview() {
-    const container = document.getElementById('order-text');
+    const container = document.getElementById('order-document');
     if (!container) return;
 
-    container.innerHTML = this.generateFormattedOrder();
+    container.innerHTML = this.generateOrderContent();
   },
 
-  generateFormattedOrder() {
+  generateOrderContent() {
     const d = this.orderData;
     const m = d.mission;
     const missionStatement = `${m.who || '___'} ${m.whatCustom || m.what || '___'} ${m.where || '___'} ${m.when || '___'} IOT ${m.why || '___'}.`;
 
-    return `<div class="order-document">
-<div class="order-header">5-PARAGRAPH ORDER</div>
+    return `<div class="order-header">5-PARAGRAPH ORDER</div>
 
 <div class="order-section">
 <div class="section-heading">ORIENTATION</div>
@@ -297,7 +318,6 @@ const App = {
 <div class="sub-subsection">(7) Number Combination: ${d.command.numberCombo || '________'}</div>
 <div class="subsection" style="margin-top:12px; font-style:italic;">"Are there any questions?"</div>
 <div class="subsection" style="margin-top:12px; font-weight:bold;">TIME HACK: ${d.command.timeHack || '________'}</div>
-</div>
 </div>`;
   },
 
@@ -409,7 +429,7 @@ const App = {
   },
 
   copyToClipboard() {
-    const doc = document.querySelector('.order-document');
+    const doc = document.getElementById('order-document');
     if (doc) {
       const text = doc.innerText;
       navigator.clipboard.writeText(text).then(() => {
@@ -422,7 +442,7 @@ const App = {
 
   exportToText() {
     document.getElementById('menu-dropdown')?.classList.add('hidden');
-    const doc = document.querySelector('.order-document');
+    const doc = document.getElementById('order-document');
     if (doc) {
       const text = doc.innerText;
       const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
