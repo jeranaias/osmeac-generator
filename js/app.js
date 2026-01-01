@@ -3,11 +3,41 @@
  * 5-Paragraph Order Builder with Live Preview
  */
 
+/**
+ * PWA Install prompt handling
+ */
+let deferredInstallPrompt = null;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  const installBtn = document.getElementById('pwa-install-btn');
+  if (installBtn) {
+    installBtn.style.display = 'inline-block';
+  }
+});
+
+function installPWA() {
+  if (!deferredInstallPrompt) {
+    alert('To install: Use your browser menu → "Add to Home Screen" or "Install App"');
+    return;
+  }
+  deferredInstallPrompt.prompt();
+  deferredInstallPrompt.userChoice.then((choiceResult) => {
+    deferredInstallPrompt = null;
+    const installBtn = document.getElementById('pwa-install-btn');
+    if (installBtn) {
+      installBtn.style.display = 'none';
+    }
+  });
+}
+
 const App = {
   orderData: null,
   currentSection: 'orientation',
   previewDebounce: null,
   previewActive: false,
+  installPWA,
 
   sections: {
     orientation: OrientationSection,
