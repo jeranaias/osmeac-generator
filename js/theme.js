@@ -88,9 +88,8 @@ const ThemeManager = {
 document.addEventListener('DOMContentLoaded', () => {
   ThemeManager.init();
 
-  // Add click handler for theme toggle
-  const themeToggle = document.getElementById('theme-toggle');
-  if (themeToggle) {
-    themeToggle.addEventListener('click', () => ThemeManager.toggle());
-  }
+  // Theme toggle click handler
+  document.getElementById('theme-toggle')?.addEventListener('click', () => {
+    ThemeManager.toggle();
+  });
 });

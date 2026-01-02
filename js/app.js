@@ -67,17 +67,29 @@ const App = {
       pane?.classList.add('show');
       container?.classList.add('preview-active');
       toggle?.classList.add('active');
-      toggle.textContent = 'Hide Preview';
+      toggle?.setAttribute('aria-pressed', 'true');
+      if (toggle) toggle.textContent = 'Hide Preview';
       this.updateLivePreview();
     } else {
       pane?.classList.remove('show');
       container?.classList.remove('preview-active');
       toggle?.classList.remove('active');
-      toggle.textContent = 'Live Preview';
+      toggle?.setAttribute('aria-pressed', 'false');
+      if (toggle) toggle.textContent = 'Live Preview';
     }
   },
 
   setupEventListeners() {
+    // Preview toggle
+    document.getElementById('previewToggle')?.addEventListener('click', () => {
+      this.togglePreview();
+    });
+
+    // Preview close
+    document.getElementById('previewClose')?.addEventListener('click', () => {
+      this.togglePreview();
+    });
+
     // Menu toggle
     document.getElementById('menu-toggle')?.addEventListener('click', () => {
       document.getElementById('menu-dropdown')?.classList.toggle('hidden');
