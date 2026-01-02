@@ -1,91 +1,121 @@
 # OSMEAC Generator
 
-**Offline-capable 5-paragraph order builder for USMC tactical leaders.**
+[![Live Demo](https://img.shields.io/badge/demo-live-success)](https://jeranaias.github.io/osmeac-generator/)
+[![PWA Ready](https://img.shields.io/badge/PWA-ready-blue)](https://jeranaias.github.io/osmeac-generator/)
+[![Offline Capable](https://img.shields.io/badge/offline-capable-green)](https://jeranaias.github.io/osmeac-generator/)
 
-A progressive web app (PWA) that helps squad leaders, platoon commanders, and OCS candidates build standardized OSMEAC 5-paragraph orders with guided prompts and tactical night mode.
+**Free, offline-capable 5-paragraph order builder for USMC tactical leaders.**
+
+Build standardized OSMEAC orders with guided prompts, live preview, and tactical night mode. Works completely offline once installed.
+
+[**Try it now**](https://jeranaias.github.io/osmeac-generator/)
+
+---
 
 ## Features
 
-- **Complete OSMEAC Structure**: All 6 sections with line-by-line prompts
-  - **O**rientation (KOCOA terrain analysis)
-  - **S**ituation (SALUTE, DRAW-D, EMLCOA/EMDCOA)
-  - **M**ission (5 W's format with tactical task dropdown)
-  - **E**xecution (Commander's Intent, Tasks, Coordinating Instructions)
-  - **A**dmin & Logistics (CASEVAC, resupply)
-  - **C**ommand & Signal (PACE, call signs, challenge/password)
+### Complete OSMEAC Structure
+All 6 sections with detailed prompts:
 
-- **Tactical Night Mode**: Red on black display for field use - preserves night vision adaptation
+| Section | Contents |
+|---------|----------|
+| **O** - Orientation | Present location, objective, KOCOA terrain analysis, weather |
+| **S** - Situation | SALUTE enemy report, DRAW-D capabilities, EMLCOA/EMDCOA, friendly forces |
+| **M** - Mission | 5 W's format with 30+ tactical task options |
+| **E** - Execution | Commander's Intent, scheme of maneuver, fire support, subordinate tasks |
+| **A** - Admin & Logistics | EPW handling, ammo/rations/water, CASEVAC plan |
+| **C** - Command & Signal | PACE frequencies, call signs, signals, challenge/password |
 
-- **100% Offline Capable**: Works without internet connection once installed
+### Live Preview
+See your complete order update in real-time as you type. Preview pane shows properly formatted 5-paragraph order ready for printing.
 
-- **PWA Installable**: Add to home screen on mobile devices
+### Three Theme Modes
+- **Light Mode** - Standard daytime use
+- **Dark Mode** - Low-light environments
+- **Night Mode** - Tactical red-on-black for field operations (preserves night vision)
 
-- **Export & Print**: Save orders as text files or print formatted copies
+### 100% Offline Capable
+Install as a Progressive Web App (PWA) and use without internet connection. Perfect for field environments with no connectivity.
 
-- **Save/Load Orders**: Store multiple orders locally for reference
+### Save & Export
+- Save multiple orders locally
+- Export to text file
+- Print formatted orders
+- Copy to clipboard
 
-## Usage
+---
 
-1. Visit the app URL or install as PWA
-2. Click on each section (O-S-M-E-A-C) to build your order
-3. Fill in the guided prompts for each subsection
-4. Preview your complete order
-5. Export to text or print as needed
+## Quick Start
 
-### Theme Modes
+1. **Visit** [jeranaias.github.io/osmeac-generator](https://jeranaias.github.io/osmeac-generator/)
+2. **Click** each section tab (O-S-M-E-A-C) to build your order
+3. **Fill in** the guided prompts for each subsection
+4. **Preview** your complete order with the Live Preview button
+5. **Export** to text file or print when complete
 
-- **Light Mode**: Standard daytime use
-- **Dark Mode**: Low-light environments
-- **Night Mode**: Tactical red-on-black for field operations
+### Install for Offline Use
 
-Toggle themes using the sun/moon icon in the header.
+**Desktop (Chrome/Edge):** Click the install icon in the address bar
 
-## Acronyms Reference
+**iPhone/iPad:** Tap Share → "Add to Home Screen"
+
+**Android:** Tap menu (⋮) → "Add to Home Screen"
+
+---
+
+## Acronym Reference
 
 ### OSMEAC
-- **O**rientation
-- **S**ituation
-- **M**ission
-- **E**xecution
-- **A**dministration & Logistics
-- **C**ommand & Signal
+| Letter | Meaning |
+|--------|---------|
+| O | Orientation |
+| S | Situation |
+| M | Mission |
+| E | Execution |
+| A | Administration & Logistics |
+| C | Command & Signal |
 
 ### KOCOA (Terrain Analysis)
-- **K**ey terrain
-- **O**bservation & fields of fire
-- **C**over & concealment
-- **O**bstacles
-- **A**venues of approach
+| Letter | Meaning |
+|--------|---------|
+| K | Key terrain |
+| O | Observation & fields of fire |
+| C | Cover & concealment |
+| O | Obstacles |
+| A | Avenues of approach |
 
 ### SALUTE (Enemy Report)
-- **S**ize
-- **A**ctivity
-- **L**ocation
-- **U**nit/Uniform
-- **T**ime observed
-- **E**quipment
+| Letter | Meaning |
+|--------|---------|
+| S | Size |
+| A | Activity |
+| L | Location |
+| U | Unit/Uniform |
+| T | Time observed |
+| E | Equipment |
 
 ### DRAW-D (Enemy Capabilities)
-- **D**efend
-- **R**einforce
-- **A**ttack
-- **W**ithdraw
-- **D**elay
+| Letter | Meaning |
+|--------|---------|
+| D | Defend |
+| R | Reinforce |
+| A | Attack |
+| W | Withdraw |
+| D | Delay |
 
-## Installation
+---
 
-### As a PWA (Recommended)
-1. Open the app in Chrome, Edge, or Safari
-2. Click "Add to Home Screen" or install from browser menu
-3. App works offline once installed
+## Self-Hosting
 
-### Self-Hosted
 ```bash
 git clone https://github.com/jeranaias/osmeac-generator.git
 cd osmeac-generator
-# Serve with any static file server
 npx serve .
 ```
+
+Or deploy to any static hosting service (GitHub Pages, Netlify, Vercel).
+
+---
 
 ## References
 
@@ -93,23 +123,35 @@ npx serve .
 - MCWP 5-10 (Marine Corps Planning Process)
 - OCS 5-Paragraph Order guidance
 
+---
+
 ## Community Attribution
 
-This tool was built based on feedback from the r/USMC community:
+Built based on feedback from the r/USMC community:
 
-| Contributor | Platform | Contribution |
-|-------------|----------|--------------|
-| **Alarming-Weekend-999** | r/USMC | Detailed spec request: offline, night mode (red/black), line-by-line prompts |
+| Contributor | Contribution |
+|-------------|--------------|
+| **Alarming-Weekend-999** | Detailed spec: offline capability, night mode (red/black), line-by-line prompts |
 
-*This tool exists because Marines took the time to share their pain points. Thank you.*
+*This tool exists because Marines took the time to share their needs. Thank you.*
+
+---
 
 ## Part of USMC Tools
 
 This generator is part of the [USMC Tools](https://jeranaias.github.io/usmc-tools/) suite - free, offline-capable web tools for Marine Corps administrative tasks.
 
+Other tools in the suite:
+- [Naval Letter Format](https://jeranaias.github.io/navalletterformat/) - Standard naval correspondence
+- [Award Write-Up Generator](https://jeranaias.github.io/award-writeup-generator/) - Award citations
+- [Page 11 Generator](https://jeranaias.github.io/page11-generator/) - Administrative remarks
+- [Pros/Cons Generator](https://jeranaias.github.io/pros-cons-generator/) - Evaluation bullets
+
+---
+
 ## License
 
-MIT License - See [LICENSE](LICENSE) file for details.
+MIT License - Free to use, modify, and distribute.
 
 ---
 
