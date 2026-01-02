@@ -834,3 +834,60 @@ footer a:hover {
   background: var(--scarlet);
   border-color: var(--scarlet);
 }
+
+/* Night mode preview pane */
+[data-theme="night"] .live-preview-pane {
+  background: #000;
+  border-color: #330000;
+}
+
+[data-theme="night"] .preview-header {
+  background: #1a0000;
+}
+
+[data-theme="night"] .preview-content {
+  background: #000;
+}
+
+/* Night mode form adjustments */
+[data-theme="night"] .form-section {
+  background: var(--white);
+  border-color: var(--scarlet);
+}
+
+[data-theme="night"] .input {
+  background: var(--gray-100);
+  border-color: var(--gray-400);
+  color: var(--gray-800);
+}
+
+[data-theme="night"] .fieldset {
+  background: var(--gray-100);
+  border-color: var(--gray-400);
+}
+
+[data-theme="night"] .section-tab {
+  background: var(--gray-100);
+  border-color: var(--gray-400);
+}
+
+[data-theme="night"] .section-tab.active {
+  background: var(--scarlet);
+  border-color: var(--scarlet);
+}
+
+[data-theme="night"] .toast {
+  background: #1a0000;
+  color: #ff0000;
+  border: 1px solid #330000;
+}
+
+[data-theme="night"] .modal {
+  background: #0a0000;
+  border: 1px solid #330000;
+}
+
+[data-theme="night"] .modal__header {
+  background: #1a0000;
+  color: #ff0000;
+}
