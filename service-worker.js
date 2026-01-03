@@ -3,7 +3,7 @@
  * Enables offline functionality for field use
  */
 
-const CACHE_NAME = 'osmeac-v2';
+const CACHE_NAME = 'osmeac-v3';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -14,6 +14,9 @@ const urlsToCache = [
   '/js/tactical-tasks.js',
   '/js/export.js',
   '/js/example-data.js',
+  '/js/qr-share.js',
+  '/js/lib/qrcode.min.js',
+  '/js/lib/lz-string.min.js',
   '/js/sections/orientation.js',
   '/js/sections/situation.js',
   '/js/sections/mission.js',

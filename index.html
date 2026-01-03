@@ -83,6 +83,7 @@
           <button id="load-order-btn" class="menu-item">Load Saved Order</button>
           <button id="save-order-btn" class="menu-item">Save Order</button>
           <hr class="menu-divider">
+          <button id="share-qr-btn" class="menu-item">Share via QR Code</button>
           <button id="copy-order-btn" class="menu-item">Copy to Clipboard</button>
           <button id="export-btn" class="menu-item">Export to Text File</button>
           <button id="print-btn" class="menu-item">Print Order</button>
@@ -735,7 +736,7 @@
 
     <footer>
       <p><strong>OSMEAC Generator v1.0</strong></p>
-      <p>Part of <a href="https://jeranaias.github.io/usmc-tools/">USMC Tools</a> · <a href="https://github.com/jeranaias/osmeac-generator">GitHub</a></p>
+      <p>Part of <a href="https://jeranaias.github.io/usmc-tools/">USMC Tools</a> · <a href="https://github.com/jeranaias/osmeac-generator">GitHub</a> · <a href="https://github.com/jeranaias/osmeac-generator/issues">Report Issue</a></p>
     </footer>
   </div>
 
@@ -775,14 +776,43 @@
     </div>
   </div>
 
+  <!-- QR Share Modal -->
+  <div id="qr-share-modal" class="modal-overlay">
+    <div class="modal qr-modal">
+      <div class="modal__header">
+        <h3 class="modal__title">Share Order via QR Code</h3>
+        <button type="button" id="qr-modal-close" class="modal__close" aria-label="Close">&times;</button>
+      </div>
+      <div class="modal__body qr-modal__body">
+        <p class="qr-instructions">Have the recipient scan this QR code with their phone camera. The order will open directly in their browser.</p>
+        <div id="qr-code-container" class="qr-code-container">
+          <div class="qr-placeholder">Generating QR Code...</div>
+        </div>
+        <p id="qr-error" class="qr-error" style="display: none;"></p>
+        <p id="qr-data-size" class="qr-data-size" style="display: none;"></p>
+        <div class="qr-requirements">
+          <strong>For offline use:</strong> Both sender and recipient must have visited this site at least once before going offline. The app caches automatically on first visit.
+        </div>
+        <p class="qr-note">Once cached, works completely offline - no internet required.</p>
+      </div>
+      <div class="modal__footer">
+        <button id="qr-copy-url" class="btn btn-outline">Copy Share URL</button>
+        <button id="qr-modal-done" class="btn btn-primary">Done</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast -->
   <div id="toast" class="toast" role="alert">
     <span id="toastMessage"></span>
   </div>
 
   <!-- Scripts -->
+  <script src="js/lib/lz-string.min.js"></script>
+  <script src="js/lib/qrcode.min.js"></script>
   <script src="js/storage.js"></script>
   <script src="js/theme.js"></script>
+  <script src="js/qr-share.js"></script>
   <script src="js/tactical-tasks.js"></script>
   <script src="js/sections/orientation.js"></script>
   <script src="js/sections/situation.js"></script>

@@ -53,7 +53,48 @@ const App = {
     this.setupEventListeners();
     this.populateAllFields();
     this.updateLivePreview();
+
+    // Initialize QR sharing and check for imported order
+    QRShare.init((sharedOrder) => {
+      this.importSharedOrder(sharedOrder);
+    });
+
     console.log('OSMEAC Generator initialized');
+  },
+
+  /**
+   * Import a shared order received via QR code
+   * @param {Object} sharedOrder - The order data from QR
+   */
+  importSharedOrder(sharedOrder) {
+    if (!sharedOrder) return;
+
+    // Merge with empty order to ensure all fields exist
+    const emptyOrder = Storage.getEmptyOrder();
+    this.orderData = this.deepMerge(emptyOrder, sharedOrder);
+
+    Storage.saveCurrent(this.orderData);
+    this.populateAllFields();
+    this.updateLivePreview();
+    this.showToast('Order received! Review and edit as needed.');
+  },
+
+  /**
+   * Deep merge two objects
+   * @param {Object} target - Base object
+   * @param {Object} source - Object to merge in
+   * @returns {Object} - Merged object
+   */
+  deepMerge(target, source) {
+    const result = { ...target };
+    for (const key in source) {
+      if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+        result[key] = this.deepMerge(target[key] || {}, source[key]);
+      } else {
+        result[key] = source[key];
+      }
+    }
+    return result;
   },
 
   togglePreview() {
@@ -111,6 +152,21 @@ const App = {
     document.getElementById('export-text-btn')?.addEventListener('click', () => this.exportToText());
     document.getElementById('print-order-btn')?.addEventListener('click', () => this.printOrder());
     document.getElementById('load-example-btn')?.addEventListener('click', () => loadExampleOrder());
+
+    // QR Share
+    document.getElementById('share-qr-btn')?.addEventListener('click', () => {
+      document.getElementById('menu-dropdown')?.classList.add('hidden');
+      QRShare.showShareModal(this.orderData);
+    });
+
+    document.getElementById('qr-modal-done')?.addEventListener('click', () => {
+      QRShare.hideShareModal();
+    });
+
+    document.getElementById('qr-copy-url')?.addEventListener('click', async () => {
+      const success = await QRShare.copyShareURL(this.orderData);
+      this.showToast(success ? 'Share URL copied!' : 'Failed to copy URL');
+    });
 
     // Section tabs
     document.querySelectorAll('.section-tab').forEach(tab => {
@@ -248,42 +304,42 @@ const App = {
 <div class="sub-subsection">(4) Obstacles: ${d.orientation.kocoa.obstacles || '________'}</div>
 <div class="sub-subsection">(5) Avenues of Approach: ${d.orientation.kocoa.avenues || '________'}</div>
 <div class="subsection">e. Weather: ${d.orientation.weather || '________'}</div>
-<div class="subsection" style="margin-top:12px; font-style:italic;">"Are there any questions on the orientation?"</div>
+<div class="subsection question">"Are there any questions on the orientation?"</div>
 </div>
 
 <div class="order-section">
 <div class="section-heading">I. SITUATION</div>
 <div class="subsection">a. Enemy Forces:</div>
 <div class="sub-subsection">(1) Composition, Disposition, Strength (SALUTE):</div>
-<div class="sub-subsection" style="margin-left:72px;">- Size: ${d.situation.salute.size || '________'}</div>
-<div class="sub-subsection" style="margin-left:72px;">- Activity: ${d.situation.salute.activity || '________'}</div>
-<div class="sub-subsection" style="margin-left:72px;">- Location: ${d.situation.salute.location || '________'}</div>
-<div class="sub-subsection" style="margin-left:72px;">- Unit/Uniform: ${d.situation.salute.unit || '________'}</div>
-<div class="sub-subsection" style="margin-left:72px;">- Time: ${d.situation.salute.time || '________'}</div>
-<div class="sub-subsection" style="margin-left:72px;">- Equipment: ${d.situation.salute.equipment || '________'}</div>
+<div class="bullet-item">Size: ${d.situation.salute.size || '________'}</div>
+<div class="bullet-item">Activity: ${d.situation.salute.activity || '________'}</div>
+<div class="bullet-item">Location: ${d.situation.salute.location || '________'}</div>
+<div class="bullet-item">Unit/Uniform: ${d.situation.salute.unit || '________'}</div>
+<div class="bullet-item">Time: ${d.situation.salute.time || '________'}</div>
+<div class="bullet-item">Equipment: ${d.situation.salute.equipment || '________'}</div>
 <div class="sub-subsection">(2) Capabilities (DRAW-D):</div>
-<div class="sub-subsection" style="margin-left:72px;">- Defend: ${d.situation.drawd.defend || '________'}</div>
-<div class="sub-subsection" style="margin-left:72px;">- Reinforce: ${d.situation.drawd.reinforce || '________'}</div>
-<div class="sub-subsection" style="margin-left:72px;">- Attack: ${d.situation.drawd.attack || '________'}</div>
-<div class="sub-subsection" style="margin-left:72px;">- Withdraw: ${d.situation.drawd.withdraw || '________'}</div>
-<div class="sub-subsection" style="margin-left:72px;">- Delay: ${d.situation.drawd.delay || '________'}</div>
+<div class="bullet-item">Defend: ${d.situation.drawd.defend || '________'}</div>
+<div class="bullet-item">Reinforce: ${d.situation.drawd.reinforce || '________'}</div>
+<div class="bullet-item">Attack: ${d.situation.drawd.attack || '________'}</div>
+<div class="bullet-item">Withdraw: ${d.situation.drawd.withdraw || '________'}</div>
+<div class="bullet-item">Delay: ${d.situation.drawd.delay || '________'}</div>
 <div class="sub-subsection">(3) EMLCOA: ${d.situation.emlcoa || '________'}</div>
 <div class="sub-subsection">(4) EMDCOA: ${d.situation.emdcoa || '________'}</div>
 <div class="subsection">b. Friendly Forces:</div>
 <div class="sub-subsection">(1) Higher's Mission: ${d.situation.friendly.higherMission || '________'}</div>
 <div class="sub-subsection">(2) Higher's Intent: ${d.situation.friendly.higherIntent || '________'}</div>
 <div class="sub-subsection">(3) Adjacent Units:</div>
-<div class="sub-subsection" style="margin-left:72px;">- North: ${d.situation.friendly.adjacentNorth || '________'}</div>
-<div class="sub-subsection" style="margin-left:72px;">- South: ${d.situation.friendly.adjacentSouth || '________'}</div>
-<div class="sub-subsection" style="margin-left:72px;">- East: ${d.situation.friendly.adjacentEast || '________'}</div>
-<div class="sub-subsection" style="margin-left:72px;">- West: ${d.situation.friendly.adjacentWest || '________'}</div>
+<div class="bullet-item">North: ${d.situation.friendly.adjacentNorth || '________'}</div>
+<div class="bullet-item">South: ${d.situation.friendly.adjacentSouth || '________'}</div>
+<div class="bullet-item">East: ${d.situation.friendly.adjacentEast || '________'}</div>
+<div class="bullet-item">West: ${d.situation.friendly.adjacentWest || '________'}</div>
 <div class="sub-subsection">(4) Supporting Units: ${d.situation.friendly.supportingUnits || '________'}</div>
 <div class="subsection">c. Attachments/Detachments: ${d.situation.attachments || '________'}</div>
 </div>
 
 <div class="order-section">
 <div class="section-heading">II. MISSION</div>
-<div class="subsection" style="font-weight:bold;">${missionStatement}</div>
+<div class="subsection mission-text">${missionStatement}</div>
 </div>
 
 <div class="order-section">
@@ -292,9 +348,9 @@ const App = {
 <div class="sub-subsection">(1) Purpose: ${d.execution.intent.purpose || '________'}</div>
 <div class="sub-subsection">(2) Method: ${d.execution.intent.method || '________'}</div>
 <div class="sub-subsection">(3) End State:</div>
-<div class="sub-subsection" style="margin-left:72px;">- Friendly: ${d.execution.intent.endstateFriendly || '________'}</div>
-<div class="sub-subsection" style="margin-left:72px;">- Enemy: ${d.execution.intent.endstateEnemy || '________'}</div>
-<div class="sub-subsection" style="margin-left:72px;">- Terrain: ${d.execution.intent.endstateTerrain || '________'}</div>
+<div class="bullet-item">Friendly: ${d.execution.intent.endstateFriendly || '________'}</div>
+<div class="bullet-item">Enemy: ${d.execution.intent.endstateEnemy || '________'}</div>
+<div class="bullet-item">Terrain: ${d.execution.intent.endstateTerrain || '________'}</div>
 <div class="subsection">b. Concept of Operations:</div>
 <div class="sub-subsection">(1) Scheme of Maneuver: ${d.execution.concept.schemeManeuver || '________'}</div>
 <div class="sub-subsection">(2) Fire Support Plan: ${d.execution.concept.fireSupport || '________'}</div>
@@ -315,6 +371,8 @@ const App = {
 <div class="sub-subsection">(9) Movement Technique: ${d.execution.coordinating.technique || '________'}</div>
 <div class="sub-subsection">(10) Departure/Reentry of Lines: ${d.execution.coordinating.departure || '________'}</div>
 </div>
+
+<div class="page-break"></div>
 
 <div class="order-section">
 <div class="section-heading">IV. ADMINISTRATION & LOGISTICS</div>
@@ -341,25 +399,25 @@ const App = {
 <div class="sub-subsection">(3) CP Location: Grid ${d.command.command.cp || '________'}</div>
 <div class="subsection">b. Signal:</div>
 <div class="sub-subsection">(1) Frequencies:</div>
-<div class="sub-subsection" style="margin-left:72px;">- Primary: ${d.command.frequencies.primary || '________'}</div>
-<div class="sub-subsection" style="margin-left:72px;">- Alternate: ${d.command.frequencies.alternate || '________'}</div>
-<div class="sub-subsection" style="margin-left:72px;">- Contingency: ${d.command.frequencies.contingency || '________'}</div>
-<div class="sub-subsection" style="margin-left:72px;">- Emergency: ${d.command.frequencies.emergency || '________'}</div>
+<div class="bullet-item">Primary: ${d.command.frequencies.primary || '________'}</div>
+<div class="bullet-item">Alternate: ${d.command.frequencies.alternate || '________'}</div>
+<div class="bullet-item">Contingency: ${d.command.frequencies.contingency || '________'}</div>
+<div class="bullet-item">Emergency: ${d.command.frequencies.emergency || '________'}</div>
 <div class="sub-subsection">(2) Call Signs:</div>
-<div class="sub-subsection" style="margin-left:72px;">- Higher: ${d.command.callsigns.higher || '________'}</div>
-<div class="sub-subsection" style="margin-left:72px;">- This Unit: ${d.command.callsigns.thisUnit || '________'}</div>
-<div class="sub-subsection" style="margin-left:72px;">- Subordinates: ${d.command.callsigns.subordinates || '________'}</div>
+<div class="bullet-item">Higher: ${d.command.callsigns.higher || '________'}</div>
+<div class="bullet-item">This Unit: ${d.command.callsigns.thisUnit || '________'}</div>
+<div class="bullet-item">Subordinates: ${d.command.callsigns.subordinates || '________'}</div>
 <div class="sub-subsection">(3) Signals:</div>
-<div class="sub-subsection" style="margin-left:72px;">- Shift Fire: ${d.command.signals.shiftFire || '________'}</div>
-<div class="sub-subsection" style="margin-left:72px;">- Cease Fire: ${d.command.signals.ceaseFire || '________'}</div>
-<div class="sub-subsection" style="margin-left:72px;">- Assault: ${d.command.signals.assault || '________'}</div>
-<div class="sub-subsection" style="margin-left:72px;">- Rally Point: ${d.command.signals.rally || '________'}</div>
+<div class="bullet-item">Shift Fire: ${d.command.signals.shiftFire || '________'}</div>
+<div class="bullet-item">Cease Fire: ${d.command.signals.ceaseFire || '________'}</div>
+<div class="bullet-item">Assault: ${d.command.signals.assault || '________'}</div>
+<div class="bullet-item">Rally Point: ${d.command.signals.rally || '________'}</div>
 <div class="sub-subsection">(4) Pyrotechnics: ${d.command.pyrotechnics || '________'}</div>
 <div class="sub-subsection">(5) Challenge/Password: ${d.command.challengePassword || '________'}</div>
 <div class="sub-subsection">(6) Running Password: ${d.command.runningPassword || '________'}</div>
 <div class="sub-subsection">(7) Number Combination: ${d.command.numberCombo || '________'}</div>
-<div class="subsection" style="margin-top:12px; font-style:italic;">"Are there any questions?"</div>
-<div class="subsection" style="margin-top:12px; font-weight:bold;">TIME HACK: ${d.command.timeHack || '________'}</div>
+<div class="subsection question">"Are there any questions?"</div>
+<div class="subsection time-hack">TIME HACK: ${d.command.timeHack || '________'}</div>
 </div>`;
   },
 
