@@ -2,12 +2,12 @@
   "name": "OSMEAC Generator",
   "short_name": "OSMEAC",
   "description": "Offline-capable 5-paragraph order builder for USMC tactical leaders. Features night mode (red on black) for field use.",
-  "start_url": "/",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#8B0000",
   "orientation": "portrait-primary",
-  "scope": "/",
+  "scope": ".",
   "icons": [
     {
       "src": "assets/icon-192.png",
